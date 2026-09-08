@@ -4,14 +4,14 @@ plugins {
 }
 
 android {
-    namespace = "com.pemmob.bagaseka"
+    namespace = "com.example.tugaspertemuan1"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.pemmob.bagaseka"
-        minSdk = 29
+        applicationId = "com.example.tugaspertemuan1"
+        minSdk = 24
         targetSdk = 37
         versionCode = 1
         versionName = "1.0"
