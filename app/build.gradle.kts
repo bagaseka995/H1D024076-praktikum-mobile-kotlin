@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.tugaspertemuan1"
+    namespace = "com.pemmob.bagaseka"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.example.tugaspertemuan1"
+        applicationId = "com.pemmob.bagaseka"
         minSdk = 24
         targetSdk = 37
         versionCode = 1
@@ -44,6 +44,9 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.material.icons.extended)
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
