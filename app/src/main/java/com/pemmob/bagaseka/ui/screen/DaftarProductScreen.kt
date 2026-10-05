@@ -171,17 +171,12 @@ fun DaftarProductScreen(
 
     when (val state = uiState) {
         is ProductUiState.Loading -> {
-            StatelessDaftarProduct(
-                categories = emptyList(),
-                selectedCategoryId = selectedCategoryId,
-                onCategorySelected = { selectedCategoryId = it },
-                searchQuery = searchQuery,
-                onSearchQueryChange = { searchQuery = it },
-                isLoading = true,
-                products = emptyList(),
-                onProductClick = {},
-                onContactUsClick = { navController?.navigate("hubungi_kami") }
-            )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
         is ProductUiState.Error -> {
             Box(
@@ -192,6 +187,10 @@ fun DaftarProductScreen(
             }
         }
         is ProductUiState.Success -> {
+            if (selectedCategoryId == null && state.categories.isNotEmpty()) {
+                selectedCategoryId = state.categories.first().id
+            }
+
             val filteredByCategory = if (selectedCategoryId != null) {
                 state.products.filter { it.category_id == selectedCategoryId }
             } else {
@@ -201,25 +200,21 @@ fun DaftarProductScreen(
             val filteredProducts = if (searchQuery.isBlank()) {
                 filteredByCategory
             } else {
-                filteredByCategory.filter { it.name.contains(other = searchQuery, ignoreCase = true) }
+                filteredByCategory.filter {
+                    it.name.contains(other = searchQuery, ignoreCase = true)
+                }
             }
 
             StatelessDaftarProduct(
                 categories = state.categories,
                 selectedCategoryId = selectedCategoryId,
-                onCategorySelected = { categoryId ->
-                    selectedCategoryId = if (selectedCategoryId == categoryId) null else categoryId
-                },
+                onCategorySelected = { selectedCategoryId = it },
                 searchQuery = searchQuery,
                 onSearchQueryChange = { searchQuery = it },
                 isLoading = false,
                 products = filteredProducts,
                 onProductClick = { product ->
-                    if (navController != null) {
-                        navController.navigate(route = "detail/${product.id}")
-                    } else {
-                        Toast.makeText(context, "Clicked: ${product.name}", Toast.LENGTH_SHORT).show()
-                    }
+                    navController?.navigate(route = "detail/${product.id}")
                 },
                 onContactUsClick = {
                     navController?.navigate(route = "hubungi_kami")
