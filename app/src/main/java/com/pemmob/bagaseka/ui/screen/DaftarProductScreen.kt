@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Card
@@ -211,9 +212,9 @@ fun StatelessDaftarProduct(
     isLoading: Boolean,
     products: List<Product>,
     onProductClick: (Product) -> Unit,
-    onContactUsClick: () -> Unit = {}
+    onContactUsClick: () -> Unit
 ) {
-    var showMenu by remember { mutableStateOf(false) }
+    var expanded by remember { mutableStateOf(value = false) }
 
     Scaffold(
         topBar = {
@@ -231,32 +232,31 @@ fun StatelessDaftarProduct(
                         tint = Color.White,
                         modifier = Modifier.padding(end = 8.dp)
                     )
-                    Box {
-                        IconButton(onClick = { showMenu = !showMenu }) {
-                            Icon(
-                                imageVector = Icons.Default.MoreVert,
-                                contentDescription = "Menu",
-                                tint = Color.White
-                            )
-                        }
-                        DropdownMenu(
-                            expanded = showMenu,
-                            onDismissRequest = { showMenu = false }
-                        ) {
-                            DropdownMenuItem(
-                                text = { Text("Hubungi Kami") },
-                                leadingIcon = {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.mail_icon),
-                                        contentDescription = "Hubungi Kami"
-                                    )
-                                },
-                                onClick = {
-                                    showMenu = false
-                                    onContactUsClick()
-                                }
-                            )
-                        }
+                    IconButton(onClick = { expanded = true }) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = "Menu",
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
+
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Hubungi Kami") },
+                            onClick = {
+                                expanded = false
+                                onContactUsClick()
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Email,
+                                    contentDescription = "Email"
+                                )
+                            }
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
