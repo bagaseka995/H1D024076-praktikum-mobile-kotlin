@@ -59,7 +59,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.pemmob.bagaseka.R
-import com.pemmob.bagaseka.data.dummy.DummyData
 import com.pemmob.bagaseka.data.model.Category
 import com.pemmob.bagaseka.data.model.Product
 import com.pemmob.bagaseka.ui.theme.BagasekaTheme
@@ -363,8 +362,8 @@ fun PreviewDaftarProdukDark() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewProduct() {
-    ProductItemCard(product = DummyData.products[0], onClick = {})
-}
+// @Preview(showBackground = true)
+// @Composable
+// fun PreviewProduct() {
+//     ProductItemCard(product = DummyData.products[0], onClick = {})
+// }

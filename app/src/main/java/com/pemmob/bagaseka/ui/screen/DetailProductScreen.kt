@@ -42,7 +42,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.pemmob.bagaseka.R
-import com.pemmob.bagaseka.data.dummy.DummyData
 import com.pemmob.bagaseka.data.model.Product
 import com.pemmob.bagaseka.ui.theme.BagasekaTheme
 import kotlinx.coroutines.delay
@@ -198,32 +197,32 @@ fun StatelessDetailProduct(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewDetailProductLight() {
-    BagasekaTheme {
-        StatelessDetailProduct(
-            product = DummyData.products[0],
-            isLoading = false,
-            quantity = 1,
-            onQuantityChange = {},
-            onBackClick = {},
-            onAddToCartClick = {}
-        )
-    }
-}
-
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun PreviewDetailProductDark() {
-    BagasekaTheme(darkTheme = true) {
-        StatelessDetailProduct(
-            product = DummyData.products[0],
-            isLoading = false,
-            quantity = 1,
-            onQuantityChange = {},
-            onBackClick = {},
-            onAddToCartClick = {}
-        )
-    }
-}
+// @Preview(showBackground = true)
+// @Composable
+// fun PreviewDetailProductLight() {
+//     BagasekaTheme {
+//         StatelessDetailProduct(
+//             product = DummyData.products[0],
+//             isLoading = false,
+//             quantity = 1,
+//             onQuantityChange = {},
+//             onBackClick = {},
+//             onAddToCartClick = {}
+//         )
+//     }
+// }
+// 
+// @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+// @Composable
+// fun PreviewDetailProductDark() {
+//     BagasekaTheme(darkTheme = true) {
+//         StatelessDetailProduct(
+//             product = DummyData.products[0],
+//             isLoading = false,
+//             quantity = 1,
+//             onQuantityChange = {},
+//             onBackClick = {},
+//             onAddToCartClick = {}
+//         )
+//     }
+// }
