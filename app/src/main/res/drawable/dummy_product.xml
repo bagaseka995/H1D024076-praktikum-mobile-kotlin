@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- Rounded grey card background -->
+    <path
+        android:fillColor="#CCCCCC"
+        android:pathData="M15,10 h70 a15,15 0 0 1 15,15 v50 a15,15 0 0 1 -15,15 h-70 a15,15 0 0 1 -15,-15 v-50 a15,15 0 0 1 15,-15 z" />
+    <!-- White mountain peaks placeholder inside -->
+    <path
+        android:fillColor="#EEEEEE"
+        android:pathData="M25,75 L45,45 L58,62 L68,52 L85,75 Z" />
+</vector>
