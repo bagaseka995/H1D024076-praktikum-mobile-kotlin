@@ -9,13 +9,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,10 +35,27 @@ import com.pemmob.bagaseka.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BasicInfoScreen(onNavigateToContact: () -> Unit) {
+fun BasicInfoScreen(
+    onNavigateToContact: () -> Unit,
+    onNavigateToProducts: (() -> Unit)? = null
+) {
     Scaffold(
-    ) {
-        paddingValues ->
+        topBar = {
+            TopAppBar(
+                title = { Text("Tentang Jualan", color = Color.White) },
+                actions = {
+                    IconButton(onClick = { onNavigateToProducts?.invoke() }) {
+                        Icon(
+                            imageVector = Icons.Filled.ShoppingCart,
+                            contentDescription = "Daftar Produk",
+                            tint = Color.White
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
+            )
+        }
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -88,6 +112,18 @@ fun BasicInfoScreen(onNavigateToContact: () -> Unit) {
             }
 
             Spacer(modifier = Modifier.weight(1f))
+
+            Button(
+                onClick = { onNavigateToProducts?.invoke() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+            ) {
+                Text("Lihat Daftar Produk", style = MaterialTheme.typography.labelLarge)
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             Button(
                 onClick = onNavigateToContact,

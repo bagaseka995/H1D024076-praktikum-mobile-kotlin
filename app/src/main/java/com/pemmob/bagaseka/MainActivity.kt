@@ -30,7 +30,8 @@ class MainActivity : ComponentActivity() {
                     NavHost(navController = navController, startDestination = "basic_info") {
                         composable(route = "basic_info") {
                             BasicInfoScreen(
-                                onNavigateToContact = { navController.navigate(route = "form_screen") }
+                                onNavigateToContact = { navController.navigate(route = "form_screen") },
+                                onNavigateToProducts = { navController.navigate(route = "daftar_produk") }
                             )
                         }
                         composable(route = "form_screen") {
