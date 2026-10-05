@@ -27,6 +27,8 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -211,6 +213,8 @@ fun StatelessDaftarProduct(
     onProductClick: (Product) -> Unit,
     onContactUsClick: () -> Unit = {}
 ) {
+    var showMenu by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -227,12 +231,32 @@ fun StatelessDaftarProduct(
                         tint = Color.White,
                         modifier = Modifier.padding(end = 8.dp)
                     )
-                    IconButton(onClick = onContactUsClick) {
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = "Hubungi Kami",
-                            tint = Color.White
-                        )
+                    Box {
+                        IconButton(onClick = { showMenu = !showMenu }) {
+                            Icon(
+                                imageVector = Icons.Default.MoreVert,
+                                contentDescription = "Menu",
+                                tint = Color.White
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = showMenu,
+                            onDismissRequest = { showMenu = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Hubungi Kami") },
+                                leadingIcon = {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.mail_icon),
+                                        contentDescription = "Hubungi Kami"
+                                    )
+                                },
+                                onClick = {
+                                    showMenu = false
+                                    onContactUsClick()
+                                }
+                            )
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(

@@ -3,8 +3,10 @@ package com.pemmob.bagaseka.ui.screen
 import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,8 +14,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -65,7 +69,7 @@ fun DetailProductScreen(productId: Int, navController: NavController?) {
         onQuantityChange = { quantity = it },
         onBackClick = { navController?.popBackStack() },
         onAddToCartClick = {
-            Toast.makeText(context, "Berhasil menambahkan ke keranjang", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Dimasukkan: $quantity", Toast.LENGTH_SHORT).show()
         }
     )
 }
@@ -150,6 +154,44 @@ fun StatelessDetailProduct(
                     Text(
                         text = "Stok: ${product.stock}"
                     )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("Jumlah Beli")
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            FilledTonalIconButton(
+                                onClick = { if (quantity > 1) onQuantityChange(quantity - 1) },
+                                enabled = quantity > 1
+                            ) { Text("-") }
+
+                            Text(
+                                text = quantity.toString(),
+                                modifier = Modifier.padding(horizontal = 16.dp)
+                            )
+
+                            FilledTonalIconButton(
+                                onClick = { if (quantity < product.stock) onQuantityChange(quantity + 1) },
+                                enabled = quantity < product.stock
+                            ) { Text("+") }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Button(
+                        onClick = onAddToCartClick,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp),
+                        enabled = product.stock > 0 && quantity > 0
+                    ) {
+                        Text("Tambah ke Keranjang")
+                    }
                 }
             }
         }
