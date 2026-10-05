@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.pemmob.bagaseka.ui.screen.BasicInfoScreen
+import com.pemmob.bagaseka.ui.screen.DaftarProductScreen
 import com.pemmob.bagaseka.ui.screen.HubungiKamiScreen
 import com.pemmob.bagaseka.ui.theme.BagasekaTheme
 
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            BagasekaTheme {
+            BagasekaTheme(darkTheme = false) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -34,6 +35,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(route = "form_screen") {
                             HubungiKamiScreen(navController = navController)
+                        }
+                        composable(route = "daftar_produk") {
+                            DaftarProductScreen(navController = navController)
                         }
                     }
                 }
