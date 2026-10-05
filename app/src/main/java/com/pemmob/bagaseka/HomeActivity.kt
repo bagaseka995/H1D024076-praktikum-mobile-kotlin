@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,6 +15,7 @@ import com.pemmob.bagaseka.ui.screen.DaftarProductScreen
 import com.pemmob.bagaseka.ui.screen.DetailProductScreen
 import com.pemmob.bagaseka.ui.screen.HubungiKamiScreen
 import com.pemmob.bagaseka.ui.theme.BagasekaTheme
+import com.pemmob.bagaseka.ui.viewmodel.ProductViewModel
 
 class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,17 +24,12 @@ class HomeActivity : ComponentActivity() {
         setContent {
             BagasekaTheme(darkTheme = true) {
                 val navController = rememberNavController()
+                val productViewModel: ProductViewModel = viewModel()
                 NavHost(navController = navController, startDestination = "daftar_produk") {
-                    composable("daftar_produk") {
-                        DaftarProductScreen(navController = navController)
-                    }
-                    composable("hubungi_kami") {
-                        HubungiKamiScreen(navController = navController)
-                    }
-                    composable("basic_info") {
-                        BasicInfoScreen(
-                            onNavigateToContact = { navController.navigate("hubungi_kami") },
-                            onNavigateToProducts = { navController.navigate("daftar_produk") }
+                    composable(route = "daftar_produk") {
+                        DaftarProductScreen(
+                            navController = navController,
+                            viewModel = productViewModel
                         )
                     }
                     composable(
@@ -40,7 +37,20 @@ class HomeActivity : ComponentActivity() {
                         arguments = listOf(navArgument("productId") { type = NavType.IntType })
                     ) { backStackEntry ->
                         val productId = backStackEntry.arguments?.getInt("productId") ?: 0
-                        DetailProductScreen(productId = productId, navController = navController)
+                        DetailProductScreen(
+                            productId = productId,
+                            navController = navController,
+                            viewModel = productViewModel
+                        )
+                    }
+                    composable(route = "hubungi_kami") {
+                        HubungiKamiScreen(navController = navController)
+                    }
+                    composable(route = "basic_info") {
+                        BasicInfoScreen(
+                            onNavigateToContact = { navController.navigate("hubungi_kami") },
+                            onNavigateToProducts = { navController.navigate("daftar_produk") }
+                        )
                     }
                 }
             }
