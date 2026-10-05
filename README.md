@@ -19,3 +19,8 @@ Pertemuan 4
 ![alt text](./images/5.jpeg)
 ![alt text](./images/6.jpeg)
 ![alt text](./images/7.jpeg)
+
+Pertemuan 5
+
+![alt text](./images/8.jpeg)
+![alt text](./images/9.jpeg)
