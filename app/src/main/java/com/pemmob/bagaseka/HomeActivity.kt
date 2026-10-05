@@ -4,11 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.pemmob.bagaseka.ui.screen.BasicInfoScreen
 import com.pemmob.bagaseka.ui.screen.DaftarProductScreen
+import com.pemmob.bagaseka.ui.screen.DetailProductScreen
 import com.pemmob.bagaseka.ui.screen.HubungiKamiScreen
 import com.pemmob.bagaseka.ui.theme.BagasekaTheme
 
@@ -31,6 +34,13 @@ class HomeActivity : ComponentActivity() {
                             onNavigateToContact = { navController.navigate("hubungi_kami") },
                             onNavigateToProducts = { navController.navigate("daftar_produk") }
                         )
+                    }
+                    composable(
+                        route = "detail/{productId}",
+                        arguments = listOf(navArgument("productId") { type = NavType.IntType })
+                    ) { backStackEntry ->
+                        val productId = backStackEntry.arguments?.getInt("productId") ?: 0
+                        DetailProductScreen(productId = productId, navController = navController)
                     }
                 }
             }
