@@ -153,51 +153,80 @@ fun CategoryItem(category: Category, isSelected: Boolean, onClick: () -> Unit) {
     }
 }
 
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.pemmob.bagaseka.ui.viewmodel.ProductUiState
+import com.pemmob.bagaseka.ui.viewmodel.ProductViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DaftarProductScreen(navController: NavController? = null) {
+fun DaftarProductScreen(
+    navController: NavController? = null,
+    viewModel: ProductViewModel = viewModel()
+) {
     val context = LocalContext.current
-    var selectedCategoryId by rememberSaveable { mutableStateOf(value = DummyData.categories.firstOrNull()?.id) }
+    var selectedCategoryId by rememberSaveable { mutableStateOf<Int?>(value = null) }
     var searchQuery by rememberSaveable { mutableStateOf(value = "") }
-    var isLoading by remember { mutableStateOf(value = false) }
-    var filteredProducts by remember { mutableStateOf(value = emptyList<Product>()) }
+    val uiState by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(key1 = selectedCategoryId, key2 = searchQuery) {
-        isLoading = true
-        delay(timeMillis = 1000)
-
-        val filteredByCategory = if (selectedCategoryId != null) {
-            DummyData.products.filter { it.category_id == selectedCategoryId }
-        } else DummyData.products
-
-        filteredProducts = if (searchQuery.isBlank()) {
-            filteredByCategory
-        } else {
-            filteredByCategory.filter { it.name.contains(other = searchQuery, ignoreCase = true) }
+    when (val state = uiState) {
+        is ProductUiState.Loading -> {
+            StatelessDaftarProduct(
+                categories = emptyList(),
+                selectedCategoryId = selectedCategoryId,
+                onCategorySelected = { selectedCategoryId = it },
+                searchQuery = searchQuery,
+                onSearchQueryChange = { searchQuery = it },
+                isLoading = true,
+                products = emptyList(),
+                onProductClick = {},
+                onContactUsClick = { navController?.navigate("hubungi_kami") }
+            )
         }
-
-        isLoading = false
-    }
-
-    StatelessDaftarProduct(
-        categories = DummyData.categories,
-        selectedCategoryId = selectedCategoryId,
-        onCategorySelected = { selectedCategoryId = it },
-        searchQuery = searchQuery,
-        onSearchQueryChange = { searchQuery = it },
-        isLoading = isLoading,
-        products = filteredProducts,
-        onProductClick = { product ->
-            if (navController != null) {
-                navController.navigate(route = "detail/${product.id}")
-            } else {
-                Toast.makeText(context, "Clicked: ${product.name}", Toast.LENGTH_SHORT).show()
+        is ProductUiState.Error -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "Error: ${state.message}", color = MaterialTheme.colorScheme.error)
             }
-        },
-        onContactUsClick = {
-            navController?.navigate(route = "hubungi_kami")
         }
-    )
+        is ProductUiState.Success -> {
+            val filteredByCategory = if (selectedCategoryId != null) {
+                state.products.filter { it.category_id == selectedCategoryId }
+            } else {
+                state.products
+            }
+
+            val filteredProducts = if (searchQuery.isBlank()) {
+                filteredByCategory
+            } else {
+                filteredByCategory.filter { it.name.contains(other = searchQuery, ignoreCase = true) }
+            }
+
+            StatelessDaftarProduct(
+                categories = state.categories,
+                selectedCategoryId = selectedCategoryId,
+                onCategorySelected = { categoryId ->
+                    selectedCategoryId = if (selectedCategoryId == categoryId) null else categoryId
+                },
+                searchQuery = searchQuery,
+                onSearchQueryChange = { searchQuery = it },
+                isLoading = false,
+                products = filteredProducts,
+                onProductClick = { product ->
+                    if (navController != null) {
+                        navController.navigate(route = "detail/${product.id}")
+                    } else {
+                        Toast.makeText(context, "Clicked: ${product.name}", Toast.LENGTH_SHORT).show()
+                    }
+                },
+                onContactUsClick = {
+                    navController?.navigate(route = "hubungi_kami")
+                }
+            )
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -48,39 +48,67 @@ import kotlinx.coroutines.delay
 
 import androidx.compose.runtime.collectAsState
 import com.pemmob.bagaseka.ui.viewmodel.ProductUiState
-import com.pemmob.bagaseka.ui.viewmodel.ProductViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailProductScreen(
     productId: Int,
     navController: NavController?,
-    viewModel: ProductViewModel
+    viewModel: ProductViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
     var quantity by rememberSaveable { mutableStateOf(value = 1) }
 
-    val isLoading = uiState is ProductUiState.Loading
-    val product = (uiState as? ProductUiState.Success)?.products?.find { it.id == productId }
-
-    StatelessDetailProduct(
-        product = product,
-        isLoading = isLoading,
-        quantity = quantity,
-        onQuantityChange = { quantity = it },
-        onBackClick = { navController?.popBackStack() },
-        onAddToCartClick = {
-            Toast.makeText(context, "Dimasukkan: $quantity", Toast.LENGTH_SHORT).show()
+    when (val state = uiState) {
+        is ProductUiState.Loading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
-    )
+        is ProductUiState.Error -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "Error: ${state.message}", color = MaterialTheme.colorScheme.error)
+            }
+        }
+        is ProductUiState.Success -> {
+            val product = state.products.find { it.id == productId }
+
+            if (product == null) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "Produk tidak ditemukan.")
+                }
+            } else {
+                StatelessDetailProduct(
+                    product = product,
+                    quantity = quantity,
+                    onQuantityChange = { newQuantity ->
+                        quantity = newQuantity
+                    },
+                    onBackClick = { navController?.popBackStack() },
+                    onAddToCartClick = {
+                        Toast.makeText(context, "Membeli sebanyak $quantity", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StatelessDetailProduct(
     product: Product?,
-    isLoading: Boolean,
     quantity: Int,
     onQuantityChange: (Int) -> Unit,
     onBackClick: () -> Unit,
@@ -105,14 +133,7 @@ fun StatelessDetailProduct(
             )
         }
     ) { paddingValues ->
-        if (isLoading) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else if (product != null) {
+        if (product != null) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
