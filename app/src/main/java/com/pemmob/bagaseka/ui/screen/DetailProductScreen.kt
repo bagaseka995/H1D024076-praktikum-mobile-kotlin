@@ -46,20 +46,23 @@ import com.pemmob.bagaseka.data.model.Product
 import com.pemmob.bagaseka.ui.theme.BagasekaTheme
 import kotlinx.coroutines.delay
 
+import androidx.compose.runtime.collectAsState
+import com.pemmob.bagaseka.ui.viewmodel.ProductUiState
+import com.pemmob.bagaseka.ui.viewmodel.ProductViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailProductScreen(productId: Int, navController: NavController?) {
+fun DetailProductScreen(
+    productId: Int,
+    navController: NavController?,
+    viewModel: ProductViewModel
+) {
     val context = LocalContext.current
-    var isLoading by remember { mutableStateOf(value = true) }
-    var product by remember { mutableStateOf<Product?>(value = null) }
+    val uiState by viewModel.uiState.collectAsState()
     var quantity by rememberSaveable { mutableStateOf(value = 1) }
 
-    LaunchedEffect(key1 = productId) {
-        isLoading = true
-        delay(timeMillis = 1000) // Simulasi loading server lambat
-        product = DummyData.products.find { it.id == productId }
-        isLoading = false
-    }
+    val isLoading = uiState is ProductUiState.Loading
+    val product = (uiState as? ProductUiState.Success)?.products?.find { it.id == productId }
 
     StatelessDetailProduct(
         product = product,
