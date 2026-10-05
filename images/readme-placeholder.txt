@@ -1,0 +1,1 @@
+images/readme-placeholder.txt
