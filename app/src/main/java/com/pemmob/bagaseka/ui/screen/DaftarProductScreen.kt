@@ -186,9 +186,15 @@ fun DaftarProductScreen(navController: NavController? = null) {
         isLoading = isLoading,
         products = filteredProducts,
         onProductClick = { product ->
-            Toast.makeText(context, "Clicked: ${product.name}", Toast.LENGTH_SHORT).show()
+            if (navController != null) {
+                navController.navigate(route = "detail/${product.id}")
+            } else {
+                Toast.makeText(context, "Clicked: ${product.name}", Toast.LENGTH_SHORT).show()
+            }
         },
-        navController = navController
+        onContactUsClick = {
+            navController?.navigate(route = "hubungi_kami")
+        }
     )
 }
 
@@ -203,7 +209,7 @@ fun StatelessDaftarProduct(
     isLoading: Boolean,
     products: List<Product>,
     onProductClick: (Product) -> Unit,
-    navController: NavController? = null
+    onContactUsClick: () -> Unit = {}
 ) {
     Scaffold(
         topBar = {
@@ -221,7 +227,7 @@ fun StatelessDaftarProduct(
                         tint = Color.White,
                         modifier = Modifier.padding(end = 8.dp)
                     )
-                    IconButton(onClick = { navController?.navigate("hubungi_kami") }) {
+                    IconButton(onClick = onContactUsClick) {
                         Icon(
                             imageVector = Icons.Default.MoreVert,
                             contentDescription = "Hubungi Kami",
@@ -283,19 +289,32 @@ fun StatelessDaftarProduct(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator()
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        CircularProgressIndicator()
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("Mencari data...")
+                    }
                 }
             } else {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(count = 2),
-                    contentPadding = PaddingValues(all = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(products) { product ->
-                        ProductItemCard(product = product) {
-                            onProductClick(product)
+                if (products.isEmpty()) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("Produk tidak ditemukan.")
+                    }
+                } else {
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(count = 2),
+                        contentPadding = PaddingValues(all = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(products) { product ->
+                            ProductItemCard(product = product) {
+                                onProductClick(product)
+                            }
                         }
                     }
                 }
