@@ -41,6 +41,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,14 +58,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.pemmob.bagaseka.R
 import com.pemmob.bagaseka.data.model.Category
 import com.pemmob.bagaseka.data.model.Product
 import com.pemmob.bagaseka.ui.theme.BagasekaTheme
-import kotlinx.coroutines.delay
-
+import com.pemmob.bagaseka.ui.viewmodel.ProductUiState
+import com.pemmob.bagaseka.ui.viewmodel.ProductViewModel
 import com.pemmob.bagaseka.util.JualanConstants.BASE_URL
+import kotlinx.coroutines.delay
 
 @Composable
 fun ProductItemCard(product: Product, onClick: () -> Unit) {
@@ -154,11 +157,6 @@ fun CategoryItem(category: Category, isSelected: Boolean, onClick: () -> Unit) {
         )
     }
 }
-
-import androidx.compose.runtime.collectAsState
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.pemmob.bagaseka.ui.viewmodel.ProductUiState
-import com.pemmob.bagaseka.ui.viewmodel.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -387,9 +385,3 @@ fun PreviewDaftarProdukDark() {
         DaftarProductScreen()
     }
 }
-
-// @Preview(showBackground = true)
-// @Composable
-// fun PreviewProduct() {
-//     ProductItemCard(product = DummyData.products[0], onClick = {})
-// }

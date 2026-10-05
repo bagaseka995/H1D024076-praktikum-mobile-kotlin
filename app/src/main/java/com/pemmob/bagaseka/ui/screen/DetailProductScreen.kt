@@ -44,7 +44,7 @@ import androidx.navigation.NavController
 import com.pemmob.bagaseka.R
 import com.pemmob.bagaseka.data.model.Product
 import com.pemmob.bagaseka.ui.theme.BagasekaTheme
-import androidx.compose.foundation.aspectRatio
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
@@ -53,6 +53,7 @@ import coil.compose.AsyncImage
 import com.pemmob.bagaseka.util.JualanConstants.BASE_URL
 import androidx.compose.runtime.collectAsState
 import com.pemmob.bagaseka.ui.viewmodel.ProductUiState
+import com.pemmob.bagaseka.ui.viewmodel.ProductViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
