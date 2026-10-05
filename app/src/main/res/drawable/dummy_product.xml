@@ -3,12 +3,16 @@
     android:height="120dp"
     android:viewportWidth="100"
     android:viewportHeight="100">
-    <!-- Rounded grey card background -->
+    <!-- Rounded grey square container -->
     <path
         android:fillColor="#CCCCCC"
-        android:pathData="M15,10 h70 a15,15 0 0 1 15,15 v50 a15,15 0 0 1 -15,15 h-70 a15,15 0 0 1 -15,-15 v-50 a15,15 0 0 1 15,-15 z" />
-    <!-- White mountain peaks placeholder inside -->
+        android:pathData="M20,10 H80 A12,12 0 0 1 92,22 V80 A12,12 0 0 1 80,92 H20 A12,12 0 0 1 8,80 V22 A12,12 0 0 1 20,10 Z" />
+    <!-- Left large white mountain peak -->
     <path
-        android:fillColor="#EEEEEE"
-        android:pathData="M25,75 L45,45 L58,62 L68,52 L85,75 Z" />
+        android:fillColor="#FFFFFF"
+        android:pathData="M18,80 L44,40 L66,80 Z" />
+    <!-- Right smaller white mountain peak -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M46,80 L66,50 L86,80 Z" />
 </vector>
