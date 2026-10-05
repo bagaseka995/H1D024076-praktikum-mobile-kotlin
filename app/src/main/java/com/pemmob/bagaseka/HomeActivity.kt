@@ -17,7 +17,7 @@ class HomeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            BagasekaTheme(darkTheme = false) {
+            BagasekaTheme(darkTheme = true) {
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = "daftar_produk") {
                     composable("daftar_produk") {
@@ -28,7 +28,8 @@ class HomeActivity : ComponentActivity() {
                     }
                     composable("basic_info") {
                         BasicInfoScreen(
-                            onNavigateToContact = { navController.navigate("hubungi_kami") }
+                            onNavigateToContact = { navController.navigate("hubungi_kami") },
+                            onNavigateToProducts = { navController.navigate("daftar_produk") }
                         )
                     }
                 }
