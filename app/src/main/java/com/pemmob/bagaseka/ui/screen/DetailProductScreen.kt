@@ -44,8 +44,13 @@ import androidx.navigation.NavController
 import com.pemmob.bagaseka.R
 import com.pemmob.bagaseka.data.model.Product
 import com.pemmob.bagaseka.ui.theme.BagasekaTheme
-import kotlinx.coroutines.delay
-
+import androidx.compose.foundation.aspectRatio
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.AsyncImage
+import com.pemmob.bagaseka.util.JualanConstants.BASE_URL
 import androidx.compose.runtime.collectAsState
 import com.pemmob.bagaseka.ui.viewmodel.ProductUiState
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -140,18 +145,25 @@ fun StatelessDetailProduct(
                     .padding(paddingValues)
                     .verticalScroll(rememberScrollState())
             ) {
-                val context = LocalContext.current
-                val imageRes = remember(product.img) {
-                    val id = context.resources.getIdentifier(product.img, "drawable", context.packageName)
-                    if (id != 0) id else R.drawable.dummy_product
+                val imageModel: Any = if (product.img == "dummy_product") {
+                    R.drawable.dummy_product
+                } else {
+                    "${BASE_URL}img/${product.img}"
                 }
-                Image(
-                    painter = painterResource(id = imageRes),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(280.dp)
-                )
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    AsyncImage(
+                        model = imageModel,
+                        contentDescription = product.name,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1f)
+                            .clip(shape = RoundedCornerShape(size = 8.dp))
+                            .background(color = Color.White),
+                        contentScale = ContentScale.Fit
+                    )
+                }
 
                 Column(modifier = Modifier.padding(all = 16.dp)) {
                     Text(

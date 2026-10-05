@@ -64,6 +64,8 @@ import com.pemmob.bagaseka.data.model.Product
 import com.pemmob.bagaseka.ui.theme.BagasekaTheme
 import kotlinx.coroutines.delay
 
+import com.pemmob.bagaseka.util.JualanConstants.BASE_URL
+
 @Composable
 fun ProductItemCard(product: Product, onClick: () -> Unit) {
     Card(
@@ -75,16 +77,16 @@ fun ProductItemCard(product: Product, onClick: () -> Unit) {
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(modifier = Modifier.padding(all = 12.dp)) {
-            val context = LocalContext.current
-            val imageRes = remember(product.img) {
-                val id = context.resources.getIdentifier(product.img, "drawable", context.packageName)
-                if (id != 0) id else R.drawable.dummy_product
+            val imageModel: Any = if (product.img == "dummy_product") {
+                R.drawable.dummy_product
+            } else {
+                BASE_URL + "img/${product.img}"
             }
             Box(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Image(
-                    painter = painterResource(id = imageRes),
+                coil.compose.AsyncImage(
+                    model = imageModel,
                     contentDescription = product.name,
                     modifier = Modifier
                         .fillMaxWidth()
