@@ -1,4 +1,4 @@
-﻿package com.pemmob.bagaseka.ui.screen
+package com.pemmob.bagaseka.ui.screen
 
 import android.content.res.Configuration
 import android.widget.Toast
@@ -65,7 +65,11 @@ fun ProductItemCard(product: Product, onClick: () -> Unit) {
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(modifier = Modifier.padding(all = 12.dp)) {
-            val imageRes = if (product.img == "dummy_product") R.drawable.dummy_product else R.drawable.dummy_product
+            val context = LocalContext.current
+            val imageRes = remember(product.img) {
+                val id = context.resources.getIdentifier(product.img, "drawable", context.packageName)
+                if (id != 0) id else R.drawable.dummy_product
+            }
             Box(
                 modifier = Modifier.fillMaxWidth()
             ) {

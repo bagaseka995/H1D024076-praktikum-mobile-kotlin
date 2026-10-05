@@ -1,4 +1,4 @@
-﻿package com.pemmob.bagaseka
+package com.pemmob.bagaseka
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,7 +12,7 @@ class HomeActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            BagasekaTheme {
+            BagasekaTheme(darkTheme = false) {
                 DaftarProductScreen()
             }
         }
